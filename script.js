@@ -17,16 +17,6 @@ $(function () {
     $chessboard = $('#chessboard');
     createChessboard($chessboard);
 
-    var initialChessboard =
-        'WR,WN,WB,WK,WQ,WB,WK,WR,' +
-        'WP,WP,WP,WP,WP,WP,WP,WP,' +
-        '  ,  ,  ,  ,  ,  ,  ,  ,' +
-        '  ,  ,  ,  ,  ,  ,  ,  ,' +
-        '  ,  ,  ,  ,  ,  ,  ,  ,' +
-        '  ,  ,  ,  ,  ,  ,  ,  ,' +
-        'BP,BP,BP,BP,BP,BP,BP,BP,' +
-        'BR,BN,BB,BQ,BK,BB,BK,BR';
-
     var pieceDict = {
         'P': 'pawn',
         'R': 'rook',
@@ -39,21 +29,49 @@ $(function () {
         return pieceDict[key]
     });
 
+    var initialChessboard = (
+        'WR,WN,WB,WK,WQ,WB,WK,WR,' +
+        'WP,WP,WP,WP,WP,WP,WP,WP,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        'BP,BP,BP,BP,BP,BP,BP,BP,' +
+        'BR,BN,BB,BQ,BK,BB,BK,BR'
+    ).split(',').map(function (shortPiece) {
+            if (shortPiece.trim().length == 0) {
+                return false;
+            } else {
+                return {
+                    color: (shortPiece[0] == 'W') ? 'white' : 'black',
+                    piece: pieceDict[shortPiece[1]]
+                }
+            }
+        });
+
     function applyToView(model) {
-        var sequence = model.split(',');
         var fields = $chessboard.find('.field');
-        var shortPiece, $field, color, piece;
+        var $field;
         for (var i = 0; i < 64; i++) {
-            shortPiece = sequence[i].toUpperCase();
             $field = $(fields[i]);
             $field.removeClass(pieces.join(' ')).removeClass('piece white black');
-            if (shortPiece.trim().length == 0) {
+            if (!model[i]) {
                 continue;
             }
-            color = (shortPiece[0] == 'W') ? 'white' : 'black';
-            piece = pieceDict[shortPiece[1]];
-            $field.addClass('piece').addClass(color).addClass(piece);
+            $field.addClass('piece').addClass(model[i].color).addClass(model[i].piece);
         }
+    }
+
+    function read(model, x, y) {
+        return model[y * 8 + x];
+    }
+
+    function store(model, x, y, piece) {
+        model[y * 8 + x] = piece;
+    }
+
+    function cloneModel(model) {
+        return JSON.parse(JSON.stringify(model));
     }
 
     function initialize() {
