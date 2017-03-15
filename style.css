@@ -1,0 +1,38 @@
+.chessboard {
+  width: 800px; }
+  .chessboard .field {
+    width: 12.5%;
+    display: block;
+    float: left;
+    position: relative; }
+    .chessboard .field::before {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%; }
+  .chessboard .row:nth-child(odd) .field:nth-child(odd),
+  .chessboard .row:nth-child(even) .field:nth-child(even) {
+    background-color: #ffffff; }
+  .chessboard .row:nth-child(odd) .field:nth-child(even),
+  .chessboard .row:nth-child(even) .field:nth-child(odd) {
+    background-color: #444444; }
+  .chessboard .piece {
+    background: url("lib/pieces/Chess_Pieces_Sprite.png") no-repeat;
+    background-size: 600%; }
+    .chessboard .piece.black {
+      background-position-y: bottom; }
+    .chessboard .piece.pawn {
+      background-position-x: 100%; }
+    .chessboard .piece.rook {
+      background-position-x: 80%; }
+    .chessboard .piece.knight {
+      background-position-x: 60%; }
+    .chessboard .piece.bishop {
+      background-position-x: 40%; }
+    .chessboard .piece.queen {
+      background-position-x: 20%; }
+    .chessboard .piece.king {
+      background-position-x: 0; }
+
+/*# sourceMappingURL=style.css.map */

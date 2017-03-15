@@ -1,0 +1,56 @@
+.chessboard {
+  width: 800px;
+
+  .field {
+    width: 12.5%;
+    display: block;
+    float: left;
+    position: relative;
+
+    &::before {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+    }
+  }
+
+  .row:nth-child(odd) .field:nth-child(odd),
+  .row:nth-child(even) .field:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  .row:nth-child(odd) .field:nth-child(even),
+  .row:nth-child(even) .field:nth-child(odd) {
+    background-color: #444444;
+  }
+
+  .piece {
+    background: url('lib/pieces/Chess_Pieces_Sprite.png') no-repeat;
+    background-size: 600%;
+
+    &.black {
+      background-position-y: bottom;
+    }
+
+    &.pawn {
+      background-position-x: 100%;
+    }
+    &.rook {
+      background-position-x: 80%;
+    }
+    &.knight {
+      background-position-x: 60%;
+    }
+    &.bishop {
+      background-position-x: 40%;
+    }
+    &.queen {
+      background-position-x: 20%;
+    }
+    &.king {
+      background-position-x: 0;
+    }
+  }
+}
