@@ -17,16 +17,48 @@ $(function () {
     $chessboard = $('#chessboard');
     createChessboard($chessboard);
 
-    // hardcoded pieces here
-    var piece, pieces, whiteRow, blackRow, i;
-    $chessboard.find('.row:nth-child(2) .field').addClass('piece white pawn');
-    $chessboard.find('.row:nth-child(7) .field').addClass('piece black pawn');
-    pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook'];
-    whiteRow = $chessboard.find('.row:first-child .field').addClass('piece white');
-    blackRow = $chessboard.find('.row:last-child .field').addClass('piece black');
-    for (i = 0; i < 8; i++) {
-        piece = pieces[i];
-        $(whiteRow[i]).addClass(piece);
-        $(blackRow[7-i]).addClass(piece);
+    var initialChessboard =
+        'WR,WN,WB,WK,WQ,WB,WK,WR,' +
+        'WP,WP,WP,WP,WP,WP,WP,WP,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        '  ,  ,  ,  ,  ,  ,  ,  ,' +
+        'BP,BP,BP,BP,BP,BP,BP,BP,' +
+        'BR,BN,BB,BQ,BK,BB,BK,BR';
+
+    var pieceDict = {
+        'P': 'pawn',
+        'R': 'rook',
+        'N': 'knight',
+        'B': 'bishop',
+        'Q': 'queen',
+        'K': 'king'
+    };
+    var pieces = Object.keys(pieceDict).map(function (key) {
+        return pieceDict[key]
+    });
+
+    function applyToView(model) {
+        var sequence = model.split(',');
+        var fields = $chessboard.find('.field');
+        var shortPiece, $field, color, piece;
+        for (var i = 0; i < 64; i++) {
+            shortPiece = sequence[i].toUpperCase();
+            $field = $(fields[i]);
+            $field.removeClass(pieces.join(' ')).removeClass('piece white black');
+            if (shortPiece.trim().length == 0) {
+                continue;
+            }
+            color = (shortPiece[0] == 'W') ? 'white' : 'black';
+            piece = pieceDict[shortPiece[1]];
+            $field.addClass('piece').addClass(color).addClass(piece);
+        }
     }
+
+    function initialize() {
+        applyToView(initialChessboard);
+    }
+
+    initialize();
 });
